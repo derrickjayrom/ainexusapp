@@ -1,7 +1,7 @@
+import 'package:ainexusapp/app/routes.dart';
 import 'package:ainexusapp/design/tokens/app_colors.dart';
 import 'package:ainexusapp/design/tokens/app_spacing.dart';
 import 'package:ainexusapp/design/widgets/app_background.dart';
-import 'package:ainexusapp/design/widgets/app_shell.dart';
 import 'package:ainexusapp/design/widgets/primary_button.dart';
 import 'package:ainexusapp/design/widgets/segmented_tabs.dart';
 import 'package:flutter/material.dart';
@@ -113,9 +113,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 PrimaryButton(
                   label: isLogin ? "Log In" : "Sign Up",
                   onPressed: () {
-                    Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (_) => const AppShell()),
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      AppRouteNames.app,
                       (route) => false,
+                      arguments: const ShellArgs(initialIndex: 0),
                     );
                   },
                   trailing: const Icon(Icons.arrow_forward, size: 18),

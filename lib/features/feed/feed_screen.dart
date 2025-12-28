@@ -5,9 +5,14 @@ import 'package:ainexusapp/design/widgets/pill.dart';
 import 'package:ainexusapp/design/widgets/section_header.dart';
 import 'package:flutter/material.dart';
 
-class FeedScreen extends StatelessWidget {
+class FeedScreen extends StatefulWidget {
   const FeedScreen({super.key});
 
+  @override
+  State<FeedScreen> createState() => _FeedScreenState();
+}
+
+class _FeedScreenState extends State<FeedScreen> {
   @override
   Widget build(BuildContext context) {
     final t = Theme.of(context).textTheme;

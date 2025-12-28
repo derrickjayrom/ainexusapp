@@ -4,9 +4,14 @@ import 'package:ainexusapp/design/widgets/pill.dart';
 import 'package:ainexusapp/design/widgets/section_header.dart';
 import 'package:flutter/material.dart';
 
-class ExploreScreen extends StatelessWidget {
+class ExploreScreen extends StatefulWidget {
   const ExploreScreen({super.key});
 
+  @override
+  State<ExploreScreen> createState() => _ExploreScreenState();
+}
+
+class _ExploreScreenState extends State<ExploreScreen> {
   @override
   Widget build(BuildContext context) {
     final t = Theme.of(context).textTheme;
