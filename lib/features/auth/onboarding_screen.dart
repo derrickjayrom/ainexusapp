@@ -1,3 +1,4 @@
+import 'package:ainexusapp/app/routes.dart';
 import 'package:ainexusapp/design/tokens/app_colors.dart';
 import 'package:ainexusapp/design/tokens/app_spacing.dart';
 import 'package:ainexusapp/design/widgets/app_background.dart';
@@ -66,15 +67,17 @@ class OnboardingScreen extends StatelessWidget {
                 PrimaryButton(
                   label: "Get Started",
                   trailing: const Icon(Icons.arrow_forward, size: 18),
-                  onPressed: () => Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const LoginScreen()),
-                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(context, AppRouteNames.login);
+                  },
                 ),
                 const SizedBox(height: 14),
+
                 TextButton(
-                  onPressed: () => Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const LoginScreen()),
-                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(context, AppRouteNames.login);
+                  },
+
                   child: const Text(
                     "Already have an account? Log In",
                     style: TextStyle(color: AppColors.textSecondary),

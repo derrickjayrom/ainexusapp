@@ -1,22 +1,34 @@
 import 'package:ainexusapp/design/tokens/app_colors.dart';
 import 'package:ainexusapp/design/widgets/app_background.dart';
+import 'package:ainexusapp/features/explore/explore_screen.dart';
+import 'package:ainexusapp/features/feed/feed_screen.dart';
+import 'package:ainexusapp/features/saved/saved_screen.dart';
+import 'package:ainexusapp/features/settings/settings_screen.dart';
 import 'package:flutter/material.dart';
 
 class AppShell extends StatefulWidget {
-  const AppShell({super.key});
+  final int initialIndex;
+
+  const AppShell({super.key, this.initialIndex = 0});
 
   @override
   State<AppShell> createState() => _AppShellState();
 }
 
 class _AppShellState extends State<AppShell> {
-  int index = 0;
+  late int index;
+
+  @override
+  void initState() {
+    super.initState();
+    index = widget.initialIndex.clamp(0, 3);
+  }
 
   final pages = const [
-    // FeedScreen(),
-    // ExploreScreen(),
-    // SavedScreen(),
-    // SettingsScreen(),
+    FeedScreen(),
+    ExploreScreen(),
+    SavedScreen(),
+    SettingsScreen(),
   ];
 
   @override

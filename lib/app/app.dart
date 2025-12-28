@@ -1,6 +1,5 @@
+import 'package:ainexusapp/app/routes.dart';
 import 'package:ainexusapp/design/theme/app_theme.dart';
-
-import 'package:ainexusapp/features/auth/onboarding_screen.dart';
 import 'package:device_frame/device_frame.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +12,8 @@ class AiNexusApp extends StatelessWidget {
     return MaterialApp(
       title: 'Ai_Nexus',
       theme: AppTheme.dark(),
-      home: const OnboardingScreen(),
+      initialRoute: AppRouteNames.onboarding,
+      onGenerateRoute: AppRoutes.onGenerateRoute,
       builder: (context, child) {
         final content = child ?? const SizedBox.shrink();
 

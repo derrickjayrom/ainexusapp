@@ -1,6 +1,7 @@
 import 'package:ainexusapp/design/tokens/app_colors.dart';
 import 'package:ainexusapp/design/tokens/app_spacing.dart';
 import 'package:ainexusapp/design/widgets/app_background.dart';
+import 'package:ainexusapp/design/widgets/app_shell.dart';
 import 'package:ainexusapp/design/widgets/primary_button.dart';
 import 'package:ainexusapp/design/widgets/segmented_tabs.dart';
 import 'package:flutter/material.dart';
@@ -111,7 +112,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: AppSpacing.md),
                 PrimaryButton(
                   label: isLogin ? "Log In" : "Sign Up",
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (_) => const AppShell()),
+                      (route) => false,
+                    );
+                  },
                   trailing: const Icon(Icons.arrow_forward, size: 18),
                 ),
 
