@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../tokens/app_colors.dart';
-import '../tokens/app_radius.dart';
+import '../../../design/tokens/app_colors.dart';
+import '../../../design/tokens/app_radius.dart';
 
 class AppTheme {
   static ThemeData dark() {

@@ -1,45 +1,30 @@
 import 'package:ainexusapp/design/tokens/app_colors.dart';
 import 'package:ainexusapp/design/widgets/app_background.dart';
-import 'package:ainexusapp/features/explore/explore_screen.dart';
-import 'package:ainexusapp/features/feed/feed_screen.dart';
-import 'package:ainexusapp/features/saved/saved_screen.dart';
-import 'package:ainexusapp/features/settings/settings_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
-class AppShell extends StatefulWidget {
-  final int initialIndex;
+class AppShell extends StatelessWidget {
+  const AppShell({super.key, required this.navigationShell});
 
-  const AppShell({super.key, this.initialIndex = 0});
-
-  @override
-  State<AppShell> createState() => _AppShellState();
-}
-
-class _AppShellState extends State<AppShell> {
-  late int index;
-
-  @override
-  void initState() {
-    super.initState();
-    index = widget.initialIndex.clamp(0, 3);
-  }
-
-  final pages = const [
-    FeedScreen(),
-    ExploreScreen(),
-    SavedScreen(),
-    SettingsScreen(),
-  ];
+  final StatefulNavigationShell navigationShell;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: AppBackground(child: pages[index]),
+      body: AppBackground(
+        child: navigationShell, // GoRouter renders the active branch here
+      ),
       bottomNavigationBar: NavigationBar(
-        backgroundColor: AppColors.surface2.withValues(alpha: 0.95),
-        indicatorColor: AppColors.primary.withValues(alpha: 0.20),
-        selectedIndex: index,
-        onDestinationSelected: (v) => setState(() => index = v),
+        backgroundColor: AppColors.surface2.withOpacity(0.95),
+        indicatorColor: AppColors.primary.withOpacity(0.20),
+        selectedIndex: navigationShell.currentIndex,
+        onDestinationSelected: (idx) {
+          navigationShell.goBranch(
+            idx,
+            // if the user taps the current tab again, keep them at that tab’s root
+            initialLocation: idx == navigationShell.currentIndex,
+          );
+        },
         destinations: const [
           NavigationDestination(
             icon: Icon(Icons.view_agenda_outlined),

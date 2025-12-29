@@ -1,19 +1,22 @@
-import 'package:ainexusapp/app/routes.dart';
 import 'package:ainexusapp/design/tokens/app_colors.dart';
 import 'package:ainexusapp/design/tokens/app_radius.dart';
 import 'package:ainexusapp/design/tokens/app_spacing.dart';
 import 'package:ainexusapp/design/widgets/app_background.dart';
 import 'package:ainexusapp/design/widgets/primary_button.dart';
+import 'package:ainexusapp/features/auth/data/auth_repository.dart';
+import 'package:ainexusapp/features/auth/state/auth_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
-class OnboardingScreen extends StatefulWidget {
+class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
 
   @override
-  State<OnboardingScreen> createState() => _OnboardingScreenState();
+  ConsumerState<OnboardingScreen> createState() => _OnboardingScreenState();
 }
 
-class _OnboardingScreenState extends State<OnboardingScreen> {
+class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     final t = Theme.of(context).textTheme;
@@ -50,13 +53,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 ),
                 const SizedBox(height: AppSpacing.xl),
 
-                _FeatureRow(
+                const _FeatureRow(
                   icon: Icons.rss_feed,
                   title: "Personalized Feed",
                   desc: "Daily AI news curated for your specific interests.",
                 ),
                 const SizedBox(height: 14),
-                _FeatureRow(
+                const _FeatureRow(
                   icon: Icons.build_circle_outlined,
                   title: "Tool Updates",
                   desc: "Discover emerging AI tools as soon as they launch.",
@@ -66,9 +69,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   icon: Icons.bookmark_add_outlined,
                   title: "Save Content",
                   desc: "Build your personal library of insights and research.",
-                  onTap: () {
-                    Navigator.pushNamed(context, AppRouteNames.saved);
-                  },
+                  onTap: () => context.go('/app'), // or context.go('/app?saved=true') later
                 ),
 
                 const Spacer(),
@@ -76,16 +77,22 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   label: "Get Started",
                   trailing: const Icon(Icons.arrow_forward, size: 18),
                   onPressed: () {
-                    Navigator.pushNamed(context, AppRouteNames.login);
+                    final auth = ref.read(authStatusProvider).maybeWhen(
+                          data: (v) => v,
+                          orElse: () => AuthStatus.unknown,
+                        );
+
+                    if (auth == AuthStatus.authenticated) {
+                      context.go('/app');
+                    } else {
+                      context.go('/login');
+                    }
                   },
                 ),
                 const SizedBox(height: 14),
 
                 TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, AppRouteNames.login);
-                  },
-
+                  onPressed: () => context.go('/login'),
                   child: const Text(
                     "Already have an account? Log In",
                     style: TextStyle(color: AppColors.textSecondary),
@@ -107,6 +114,7 @@ class _FeatureRow extends StatelessWidget {
     required this.desc,
     this.onTap,
   });
+
   final IconData icon;
   final String title;
   final String desc;
@@ -115,44 +123,46 @@ class _FeatureRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Theme.of(context).textTheme;
+
     return Material(
       borderRadius: AppRadius.rSm,
-      color: AppColors.bgBottom.withValues(alpha: 0.4),
+      color: AppColors.bgBottom.withOpacity(0.4),
       child: InkWell(
         borderRadius: AppRadius.rSm,
         onTap: onTap,
-        child: Row(
-          children: [
-            Container(
-              width: 52,
-              height: 52,
-              decoration: BoxDecoration(
-                color: AppColors.surface2.withValues(alpha: 0.9),
-                borderRadius: BorderRadius.circular(18),
-                border: Border.all(color: AppColors.stroke),
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Row(
+            children: [
+              Container(
+                width: 52,
+                height: 52,
+                decoration: BoxDecoration(
+                  color: AppColors.surface2.withOpacity(0.9),
+                  borderRadius: BorderRadius.circular(18),
+                  border: Border.all(color: AppColors.stroke),
+                ),
+                child: Icon(icon, color: AppColors.primary),
               ),
-              child: Icon(icon, color: AppColors.primary),
-            ),
-            const SizedBox(width: 14),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: t.titleMedium?.copyWith(fontWeight: FontWeight.w800),
-                  ),
-                  const SizedBox(height: 3),
-                  Text(
-                    desc,
-                    style: t.bodyMedium?.copyWith(
-                      color: AppColors.textSecondary,
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: t.titleMedium?.copyWith(fontWeight: FontWeight.w800),
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 3),
+                    Text(
+                      desc,
+                      style: t.bodyMedium?.copyWith(color: AppColors.textSecondary),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -1,19 +1,21 @@
-import 'package:ainexusapp/app/routes.dart';
 import 'package:ainexusapp/design/tokens/app_colors.dart';
 import 'package:ainexusapp/design/tokens/app_spacing.dart';
 import 'package:ainexusapp/design/widgets/app_background.dart';
 import 'package:ainexusapp/design/widgets/primary_button.dart';
 import 'package:ainexusapp/design/widgets/segmented_tabs.dart';
+import 'package:ainexusapp/features/auth/state/auth_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends ConsumerState<LoginScreen> {
   bool isLogin = true;
 
   @override
@@ -38,10 +40,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   width: 56,
                   height: 56,
                   decoration: BoxDecoration(
-                    color: AppColors.primary.withValues(alpha: 0.25),
+                    color: AppColors.primary.withOpacity(0.25),
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
-                      color: AppColors.primary.withValues(alpha: 0.55),
+                      color: AppColors.primary.withOpacity(0.55),
                     ),
                   ),
                   child: const Icon(
@@ -72,20 +74,24 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: AppSpacing.lg),
                 Text(
                   "EMAIL OR USERNAME",
-                  style: t.labelLarge?.copyWith(color: AppColors.textMuted),
+                  style: (t.labelLarge ?? const TextStyle()).copyWith(
+                    color: AppColors.textMuted,
+                  ),
                 ),
                 const SizedBox(height: AppSpacing.sm),
-                TextField(
+                const TextField(
                   decoration: InputDecoration(
                     hintText: "name@example.com",
-                    prefixIcon: const Icon(Icons.mail_outline),
+                    prefixIcon: Icon(Icons.mail_outline),
                   ),
                 ),
 
                 const SizedBox(height: AppSpacing.md),
                 Text(
                   "PASSWORD",
-                  style: t.labelLarge?.copyWith(color: AppColors.textMuted),
+                  style: (t.labelLarge ?? const TextStyle()).copyWith(
+                    color: AppColors.textMuted,
+                  ),
                 ),
                 const SizedBox(height: AppSpacing.sm),
                 TextField(
@@ -112,13 +118,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: AppSpacing.md),
                 PrimaryButton(
                   label: isLogin ? "Log In" : "Sign Up",
-                  onPressed: () {
-                    Navigator.pushNamedAndRemoveUntil(
-                      context,
-                      AppRouteNames.app,
-                      (route) => false,
-                      arguments: const ShellArgs(initialIndex: 0),
-                    );
+                  onPressed: () async {
+                    await ref
+                        .read(authControllerProvider.notifier)
+                        .signIn("demo@x.com", "password");
+
+                    if (!mounted) return;
+                    context.go('/app');
                   },
                   trailing: const Icon(Icons.arrow_forward, size: 18),
                 ),
@@ -127,9 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Row(
                   children: [
                     Expanded(
-                      child: Divider(
-                        color: AppColors.stroke.withValues(alpha: 0.8),
-                      ),
+                      child: Divider(color: AppColors.stroke.withOpacity(0.8)),
                     ),
                     const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 12),
@@ -139,9 +143,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     Expanded(
-                      child: Divider(
-                        color: AppColors.stroke.withValues(alpha: 0.8),
-                      ),
+                      child: Divider(color: AppColors.stroke.withOpacity(0.8)),
                     ),
                   ],
                 ),
@@ -203,7 +205,7 @@ class _SocialButton extends StatelessWidget {
       child: Container(
         height: 56,
         decoration: BoxDecoration(
-          color: AppColors.surface2.withValues(alpha: 0.9),
+          color: AppColors.surface2.withOpacity(0.9),
           borderRadius: BorderRadius.circular(18),
           border: Border.all(color: AppColors.stroke),
         ),
