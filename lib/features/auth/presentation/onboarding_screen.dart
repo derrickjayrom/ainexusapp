@@ -69,7 +69,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                   icon: Icons.bookmark_add_outlined,
                   title: "Save Content",
                   desc: "Build your personal library of insights and research.",
-                  onTap: () => context.go('/app'), // or context.go('/app?saved=true') later
+                  onTap: () => context.go(
+                    '/app',
+                  ), // or context.go('/app?saved=true') later
                 ),
 
                 const Spacer(),
@@ -77,7 +79,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                   label: "Get Started",
                   trailing: const Icon(Icons.arrow_forward, size: 18),
                   onPressed: () {
-                    final auth = ref.read(authStatusProvider).maybeWhen(
+                    final auth = ref
+                        .read(authStatusProvider)
+                        .maybeWhen(
                           data: (v) => v,
                           orElse: () => AuthStatus.unknown,
                         );
@@ -126,7 +130,7 @@ class _FeatureRow extends StatelessWidget {
 
     return Material(
       borderRadius: AppRadius.rSm,
-      color: AppColors.bgBottom.withOpacity(0.4),
+      color: AppColors.bgBottom.withValues(alpha: 0.4),
       child: InkWell(
         borderRadius: AppRadius.rSm,
         onTap: onTap,
@@ -138,7 +142,7 @@ class _FeatureRow extends StatelessWidget {
                 width: 52,
                 height: 52,
                 decoration: BoxDecoration(
-                  color: AppColors.surface2.withOpacity(0.9),
+                  color: AppColors.surface2.withValues(alpha: 0.9),
                   borderRadius: BorderRadius.circular(18),
                   border: Border.all(color: AppColors.stroke),
                 ),
@@ -151,12 +155,16 @@ class _FeatureRow extends StatelessWidget {
                   children: [
                     Text(
                       title,
-                      style: t.titleMedium?.copyWith(fontWeight: FontWeight.w800),
+                      style: t.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w800,
+                      ),
                     ),
                     const SizedBox(height: 3),
                     Text(
                       desc,
-                      style: t.bodyMedium?.copyWith(color: AppColors.textSecondary),
+                      style: t.bodyMedium?.copyWith(
+                        color: AppColors.textSecondary,
+                      ),
                     ),
                   ],
                 ),

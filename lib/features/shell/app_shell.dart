@@ -15,8 +15,8 @@ class AppShell extends StatelessWidget {
         child: navigationShell, // GoRouter renders the active branch here
       ),
       bottomNavigationBar: NavigationBar(
-        backgroundColor: AppColors.surface2.withOpacity(0.95),
-        indicatorColor: AppColors.primary.withOpacity(0.20),
+        backgroundColor: AppColors.surface2.withValues(alpha: 0.95),
+        indicatorColor: AppColors.primary.withValues(alpha: 0.20),
         selectedIndex: navigationShell.currentIndex,
         onDestinationSelected: (idx) {
           navigationShell.goBranch(

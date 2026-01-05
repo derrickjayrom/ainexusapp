@@ -40,10 +40,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   width: 56,
                   height: 56,
                   decoration: BoxDecoration(
-                    color: AppColors.primary.withOpacity(0.25),
+                    color: AppColors.primary.withValues(alpha: 0.25),
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
-                      color: AppColors.primary.withOpacity(0.55),
+                      color: AppColors.primary.withValues(alpha: 0.55),
                     ),
                   ),
                   child: const Icon(
@@ -123,8 +123,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         .read(authControllerProvider.notifier)
                         .signIn("demo@x.com", "password");
 
-                    if (!mounted) return;
-                    context.go('/app');
+                    if (!context.mounted) return;
+                    context.go('/app/feed');
                   },
                   trailing: const Icon(Icons.arrow_forward, size: 18),
                 ),
@@ -133,7 +133,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 Row(
                   children: [
                     Expanded(
-                      child: Divider(color: AppColors.stroke.withOpacity(0.8)),
+                      child: Divider(
+                        color: AppColors.stroke.withValues(alpha: 0.8),
+                      ),
                     ),
                     const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 12),
@@ -143,7 +145,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ),
                     ),
                     Expanded(
-                      child: Divider(color: AppColors.stroke.withOpacity(0.8)),
+                      child: Divider(
+                        color: AppColors.stroke.withValues(alpha: 0.8),
+                      ),
                     ),
                   ],
                 ),
@@ -205,7 +209,7 @@ class _SocialButton extends StatelessWidget {
       child: Container(
         height: 56,
         decoration: BoxDecoration(
-          color: AppColors.surface2.withOpacity(0.9),
+          color: AppColors.surface2.withValues(alpha: 0.9),
           borderRadius: BorderRadius.circular(18),
           border: Border.all(color: AppColors.stroke),
         ),

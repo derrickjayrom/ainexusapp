@@ -13,8 +13,9 @@ class NewsCard extends StatelessWidget {
     this.onTap,
     this.onBookmark,
     this.compact = false,
+    this.isBookmarked = false,
   });
-
+  final bool isBookmarked;
   final String title;
   final String subtitle;
   final String source;
@@ -92,9 +93,11 @@ class NewsCard extends StatelessWidget {
             const SizedBox(width: 8),
             IconButton(
               onPressed: onBookmark,
-              icon: const Icon(
-                Icons.bookmark_border,
-                color: AppColors.textSecondary,
+              icon: Icon(
+                isBookmarked ? Icons.bookmark : Icons.bookmark_border,
+                color: isBookmarked
+                    ? AppColors.primary
+                    : AppColors.textSecondary,
               ),
             ),
           ],

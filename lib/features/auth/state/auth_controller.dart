@@ -1,11 +1,9 @@
-import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 import '../data/auth_repository.dart';
 import '../data/fake_auth_repository.dart';
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
-  // Swap FakeAuthRepository -> RealAuthRepository later without changing UI.
   return FakeAuthRepository();
 });
 
@@ -28,7 +26,7 @@ class AuthController extends StateNotifier<AsyncValue<void>> {
 
   Future<void> signOut() async {
     state = const AsyncLoading();
-    state = await AsyncValue.guard(() => _repo.signOut());
+    state = await AsyncValue.guard(_repo.signOut);
   }
 }
 
