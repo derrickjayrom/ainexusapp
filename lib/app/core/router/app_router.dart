@@ -92,8 +92,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       if (auth == AuthStatus.unknown) return null;
 
       if (auth == AuthStatus.unauthenticated) {
-        if (isInApp) return '/login';
-        return null;
+        if (isInApp) return '/onboarding';
+        return null; // Let them stay on onboarding or login if they are there
       }
 
       // authenticated

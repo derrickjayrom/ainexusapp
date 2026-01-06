@@ -2,14 +2,17 @@ import 'package:ainexusapp/design/tokens/app_colors.dart';
 import 'package:ainexusapp/design/tokens/app_spacing.dart';
 import 'package:flutter/material.dart';
 
-class SettingsScreen extends StatefulWidget {
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ainexusapp/features/auth/state/auth_controller.dart';
+
+class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
 
   @override
-  State<SettingsScreen> createState() => _SettingsScreenState();
+  ConsumerState<SettingsScreen> createState() => _SettingsScreenState();
 }
 
-class _SettingsScreenState extends State<SettingsScreen> {
+class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     final t = Theme.of(context).textTheme;
@@ -175,19 +178,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
 
           const SizedBox(height: AppSpacing.lg),
-          Container(
-            padding: const EdgeInsets.all(14),
-            decoration: BoxDecoration(
-              color: AppColors.surface.withValues(alpha: 0.75),
-              borderRadius: BorderRadius.circular(22),
-              border: Border.all(color: AppColors.stroke),
-            ),
-            child: Center(
-              child: Text(
-                "Log Out",
-                style: t.titleMedium?.copyWith(
-                  color: AppColors.danger,
-                  fontWeight: FontWeight.w900,
+          GestureDetector(
+            onTap: () {
+              ref.read(authControllerProvider.notifier).signOut();
+            },
+            child: Container(
+              padding: const EdgeInsets.all(14),
+              decoration: BoxDecoration(
+                color: AppColors.surface.withValues(alpha: 0.75),
+                borderRadius: BorderRadius.circular(22),
+                border: Border.all(color: AppColors.stroke),
+              ),
+              child: Center(
+                child: Text(
+                  "Log Out",
+                  style: t.titleMedium?.copyWith(
+                    color: AppColors.danger,
+                    fontWeight: FontWeight.w900,
+                  ),
                 ),
               ),
             ),

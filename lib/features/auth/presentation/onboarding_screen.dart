@@ -70,7 +70,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                   title: "Save Content",
                   desc: "Build your personal library of insights and research.",
                   onTap: () => context.go(
-                    '/app',
+                    '/app/?saved',
                   ), // or context.go('/app?saved=true') later
                 ),
 
