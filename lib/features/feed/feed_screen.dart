@@ -11,7 +11,9 @@ class FeedScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final feed = ref.watch(feedProvider);
-    final savedIds = ref.watch(savedIdsProvider);
+   final savedAsync = ref.watch(savedIdsProvider);
+final savedIds = savedAsync.value ?? <String>{};
+
 
     return SafeArea(
       child: ListView(
@@ -40,9 +42,9 @@ class FeedScreen extends ConsumerWidget {
                     source: a.source,
                     timeAgo: a.timeAgo,
                     isLive: a.isLive,
-                    isBookmarked: savedIds.contains(a.id),
-                    onBookmark: () =>
-                        ref.read(savedIdsProvider.notifier).toggle(a.id),
+                  isBookmarked: savedIds.contains(a.id),
+onBookmark: () => ref.read(savedIdsProvider.notifier).toggle(a.id),
+
                     onTap: () {}, // later: navigate to details
                   ),
                   const SizedBox(height: 12),

@@ -1,44 +1,49 @@
-import 'package:ainexusapp/features/feed/data/in_memory_saved_repository.dart';
 import 'package:ainexusapp/features/feed/data/saved_repository.dart';
+import 'package:ainexusapp/features/feed/data/shared_prefs_saved_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_riverpod/legacy.dart';
 
 final savedRepositoryProvider = Provider<SavedRepository>((ref) {
-  return InMemorySavedRepository();
+  return SharedPrefsSavedRepository();
 });
 
-class SavedController extends StateNotifier<Set<String>> {
-  SavedController(this._repo) : super(_repo.readSavedIds());
+class SavedIdsController extends AsyncNotifier<Set<String>> {
+  late final SavedRepository _repo;
 
-  final SavedRepository _repo;
+  @override
+  Future<Set<String>> build() async {
+    _repo = ref.read(savedRepositoryProvider);
+    return _repo.loadSavedIds();
+  }
 
-  bool isSaved(String id) => state.contains(id);
+  bool isSaved(String id) => (state.value ?? const <String>{}).contains(id);
 
-  void toggle(String id) {
-    final next = Set<String>.from(state);
+  Future<void> toggle(String id) async {
+    final current = state.value ?? <String>{};
+    final next = Set<String>.from(current);
+
     if (!next.add(id)) {
       next.remove(id);
     }
-    state = next;
-    _repo.writeSavedIds(next);
+
+    state = AsyncData(next);
+    await _repo.saveSavedIds(next);
   }
 
-  void remove(String id) {
-    if (!state.contains(id)) return;
-    final next = Set<String>.from(state)..remove(id);
-    state = next;
-    _repo.writeSavedIds(next);
+  Future<void> remove(String id) async {
+    final current = state.value ?? <String>{};
+    if (!current.contains(id)) return;
+
+    final next = Set<String>.from(current)..remove(id);
+    state = AsyncData(next);
+    await _repo.saveSavedIds(next);
   }
 
-  void clear() {
-    state = <String>{};
-    _repo.writeSavedIds(state);
+  Future<void> clear() async {
+    state = const AsyncData(<String>{});
+    await _repo.saveSavedIds(<String>{});
   }
 }
 
-final savedIdsProvider = StateNotifierProvider<SavedController, Set<String>>((
-  ref,
-) {
-  final repo = ref.watch(savedRepositoryProvider);
-  return SavedController(repo);
-});
+final savedIdsProvider = AsyncNotifierProvider<SavedIdsController, Set<String>>(
+  SavedIdsController.new,
+);

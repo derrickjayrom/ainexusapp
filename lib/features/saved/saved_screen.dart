@@ -11,7 +11,8 @@ class SavedScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final feed = ref.watch(feedProvider);
-    final savedIds = ref.watch(savedIdsProvider);
+    final savedAsync = ref.watch(savedIdsProvider);
+    final savedIds = savedAsync.value ?? <String>{};
 
     return SafeArea(
       child: ListView(

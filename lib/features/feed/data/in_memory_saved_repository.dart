@@ -4,11 +4,10 @@ class InMemorySavedRepository implements SavedRepository {
   Set<String> _ids = <String>{};
 
   @override
-  Set<String> readSavedIds() => _ids;
-  
+  Future<Set<String>> loadSavedIds() async => _ids;
 
   @override
-  void writeSavedIds(Set<String> ids) {
+  Future<void> saveSavedIds(Set<String> ids) async {
     _ids = ids;
   }
 }
