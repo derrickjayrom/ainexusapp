@@ -17,142 +17,160 @@ class _ExploreScreenState extends State<ExploreScreen> {
     final t = Theme.of(context).textTheme;
 
     return SafeArea(
-      child: ListView(
-        padding: const EdgeInsets.fromLTRB(
-          AppSpacing.lg,
-          AppSpacing.md,
-          AppSpacing.lg,
-          AppSpacing.xl,
-        ),
-        children: [
-          Row(
-            children: [
-              CircleAvatar(
-                radius: 20,
-                backgroundColor: AppColors.primary.withValues(alpha: 0.25),
-                child: const Icon(
-                  Icons.person_outline,
-                  color: AppColors.textPrimary,
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+      child: CustomScrollView(
+        slivers: [
+          SliverPadding(
+            padding: const EdgeInsets.fromLTRB(
+              AppSpacing.lg,
+              AppSpacing.md,
+              AppSpacing.lg,
+              AppSpacing.xl,
+            ),
+            sliver: SliverList(
+              delegate: SliverChildListDelegate([
+                Row(
                   children: [
-                    Text(
-                      "Good Morning,",
-                      style: t.bodyMedium?.copyWith(color: AppColors.textMuted),
+                    CircleAvatar(
+                      radius: 20,
+                      backgroundColor: AppColors.primaryAlpha25,
+                      child: const Icon(
+                        Icons.person_outline,
+                        color: AppColors.textPrimary,
+                      ),
                     ),
-                    Text(
-                      "Alex",
-                      style: t.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w900,
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Good Morning,",
+                            style: t.bodyMedium?.copyWith(
+                              color: AppColors.textMuted,
+                            ),
+                          ),
+                          Text(
+                            "Alex",
+                            style: t.titleLarge?.copyWith(
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.notifications_none,
+                        color: AppColors.textPrimary,
                       ),
                     ),
                   ],
                 ),
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.notifications_none,
-                  color: AppColors.textPrimary,
+                const SizedBox(height: AppSpacing.md),
+
+                Text("Explore", style: t.headlineLarge?.copyWith(fontSize: 30)),
+                const SizedBox(height: 12),
+
+                TextField(
+                  decoration: InputDecoration(
+                    hintText: "Search models, tools, news...",
+                    prefixIcon: const Icon(Icons.search),
+                    suffixIcon: IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.tune),
+                    ),
+                  ),
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: AppSpacing.md),
+                const SizedBox(height: 14),
 
-          Text("Explore", style: t.headlineLarge?.copyWith(fontSize: 30)),
-          const SizedBox(height: 12),
+                Row(
+                  children: [
+                    Text(
+                      "Trending:",
+                      style: t.bodyMedium?.copyWith(
+                        color: AppColors.textMuted,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Pill("#GPT-5", onTap: () {}),
+                    const SizedBox(width: 10),
+                    Pill("#MidjourneyV7", onTap: () {}),
+                    const SizedBox(width: 10),
+                    Pill("#Sora", onTap: () {}),
+                  ],
+                ),
 
-          TextField(
-            decoration: InputDecoration(
-              hintText: "Search models, tools, news...",
-              prefixIcon: const Icon(Icons.search),
-              suffixIcon: IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.tune),
-              ),
+                const SizedBox(height: AppSpacing.lg),
+                SectionHeader(
+                  title: "Browse Categories",
+                  trailing: LinkText("View all", onTap: () {}),
+                ),
+                const SizedBox(height: 12),
+
+                const _CategoryHeroCard(
+                  title: "Large Language Models",
+                  subtitle: "124 Tools & Updates",
+                ),
+                const SizedBox(height: 12),
+              ]),
             ),
           ),
-          const SizedBox(height: 14),
-
-          Row(
-            children: [
-              Text(
-                "Trending:",
-                style: t.bodyMedium?.copyWith(
-                  color: AppColors.textMuted,
-                  fontWeight: FontWeight.w800,
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+            sliver: SliverGrid.count(
+              crossAxisCount: 2,
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 12,
+              children: const [
+                _CategoryCard(
+                  icon: Icons.palette_outlined,
+                  title: "Image Gen",
+                  subtitle: "Stable Diffusion, DALL·E",
                 ),
-              ),
-              const SizedBox(width: 10),
-              Pill("#GPT-5", onTap: () {}),
-              const SizedBox(width: 10),
-              Pill("#MidjourneyV7", onTap: () {}),
-              const SizedBox(width: 10),
-              Pill("#Sora", onTap: () {}),
-            ],
+                _CategoryCard(
+                  icon: Icons.code,
+                  title: "Coding",
+                  subtitle: "Copilot, Devin, Cursor",
+                ),
+                _CategoryCard(
+                  icon: Icons.bar_chart_outlined,
+                  title: "Data Science",
+                  subtitle: "Analysis, Visualization",
+                ),
+                _CategoryCard(
+                  icon: Icons.videocam_outlined,
+                  title: "Video & 3D",
+                  subtitle: "Sora, Runway, Pika",
+                ),
+              ],
+            ),
           ),
-
-          const SizedBox(height: AppSpacing.lg),
-          SectionHeader(
-            title: "Browse Categories",
-            trailing: LinkText("View all", onTap: () {}),
-          ),
-          const SizedBox(height: 12),
-
-          _CategoryHeroCard(
-            title: "Large Language Models",
-            subtitle: "124 Tools & Updates",
-          ),
-          const SizedBox(height: 12),
-
-          GridView.count(
-            crossAxisCount: 2,
-            crossAxisSpacing: 12,
-            mainAxisSpacing: 12,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            children: const [
-              _CategoryCard(
-                icon: Icons.palette_outlined,
-                title: "Image Gen",
-                subtitle: "Stable Diffusion, DALL·E",
-              ),
-              _CategoryCard(
-                icon: Icons.code,
-                title: "Coding",
-                subtitle: "Copilot, Devin, Cursor",
-              ),
-              _CategoryCard(
-                icon: Icons.bar_chart_outlined,
-                title: "Data Science",
-                subtitle: "Analysis, Visualization",
-              ),
-              _CategoryCard(
-                icon: Icons.videocam_outlined,
-                title: "Video & 3D",
-                subtitle: "Sora, Runway, Pika",
-              ),
-            ],
-          ),
-
-          const SizedBox(height: AppSpacing.lg),
-          SectionHeader(title: "Featured Collections"),
-          const SizedBox(height: 12),
-          const _CollectionRow(
-            title: "Best for Productivity",
-            subtitle: "Tools to 10x your workflow...",
-            count: "8 TOOLS",
-          ),
-          const SizedBox(height: 12),
-          const _CollectionRow(
-            title: "Developer Essentials",
-            subtitle: "Must-have AI extensions for VS...",
-            count: "5 TOOLS",
+          SliverPadding(
+            padding: const EdgeInsets.fromLTRB(
+              AppSpacing.lg,
+              AppSpacing.lg,
+              AppSpacing.lg,
+              AppSpacing.xl,
+            ),
+            sliver: SliverList(
+              delegate: SliverChildListDelegate([
+                SectionHeader(title: "Featured Collections"),
+                const SizedBox(height: 12),
+                const _CollectionRow(
+                  title: "Best for Productivity",
+                  subtitle: "Tools to 10x your workflow...",
+                  count: "8 TOOLS",
+                ),
+                const SizedBox(height: 12),
+                const _CollectionRow(
+                  title: "Developer Essentials",
+                  subtitle: "Must-have AI extensions for VS...",
+                  count: "5 TOOLS",
+                ),
+              ]),
+            ),
           ),
         ],
       ),
@@ -171,7 +189,7 @@ class _CategoryHeroCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.primary.withValues(alpha: 0.92),
+        color: AppColors.primaryAlpha25.withValues(alpha: 0.92),
         borderRadius: BorderRadius.circular(22),
       ),
       child: Row(
@@ -180,7 +198,7 @@ class _CategoryHeroCard extends StatelessWidget {
             width: 54,
             height: 54,
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.14),
+              color: AppColors.whiteAlpha14,
               borderRadius: BorderRadius.circular(18),
             ),
             child: const Icon(
@@ -203,9 +221,7 @@ class _CategoryHeroCard extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   subtitle,
-                  style: t.bodyMedium?.copyWith(
-                    color: Colors.white.withValues(alpha: 0.8),
-                  ),
+                  style: t.bodyMedium?.copyWith(color: AppColors.whiteAlpha80),
                 ),
               ],
             ),
@@ -299,9 +315,7 @@ class _CollectionRow extends StatelessWidget {
             decoration: BoxDecoration(
               gradient: RadialGradient(
                 colors: [
-                  isDark
-                      ? AppColors.primary.withValues(alpha: 0.35)
-                      : AppColors.primary.withValues(alpha: 0.35),
+                  AppColors.primaryAlpha25,
                   isDark ? AppColors.surface2Dark : AppColors.surface2Light,
                 ],
               ),

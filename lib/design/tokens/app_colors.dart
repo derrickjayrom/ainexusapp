@@ -38,6 +38,15 @@ class AppColors {
   // Status
   static const danger = Color(0xFFFF4D4D);
 
+  // Alpha-blended Colors (Optimized)
+  static const primaryAlpha25 = Color(0x401D5CFF); // 0.25 alpha
+  static const primaryAlpha22 = Color(0x381D5CFF); // 0.22 alpha
+  static const whiteAlpha14 = Color(0x24FFFFFF); // 0.14 alpha
+  static const whiteAlpha80 = Color(0xCCFFFFFF); // 0.80 alpha
+  static const surfaceAlpha75 = Color(0xBF141C2B); // 0.75 alpha (Dark)
+  static const surface2Alpha90 = Color(0xE6101827); // 0.90 alpha (Dark)
+  static const surface2Alpha95 = Color(0xF2101827); // 0.95 alpha (Dark)
+
   // Legacy/Helper getters to avoid breaking changes if any
   static const bgMid = bgMidDark;
   static const surface = surfaceDark;
