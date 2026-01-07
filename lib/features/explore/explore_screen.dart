@@ -229,11 +229,12 @@ class _CategoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final t = Theme.of(context).textTheme;
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.surface.withValues(alpha: 0.75),
+        color: isDark ? AppColors.surface2Dark : AppColors.surface2Light,
         borderRadius: BorderRadius.circular(22),
         border: Border.all(color: AppColors.stroke),
       ),
@@ -244,11 +245,14 @@ class _CategoryCard extends StatelessWidget {
             width: 44,
             height: 44,
             decoration: BoxDecoration(
-              color: AppColors.surface2.withValues(alpha: 0.95),
+              color: isDark ? AppColors.surface2Dark : AppColors.surface2Light,
               borderRadius: BorderRadius.circular(16),
               border: Border.all(color: AppColors.stroke),
             ),
-            child: Icon(icon, color: AppColors.textPrimary),
+            child: Icon(
+              icon,
+              color: isDark ? AppColors.textSecondary : AppColors.bgTopDark,
+            ),
           ),
           const Spacer(),
           Text(
@@ -278,11 +282,12 @@ class _CollectionRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final t = Theme.of(context).textTheme;
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: AppColors.surface.withValues(alpha: 0.75),
+        color: isDark ? AppColors.surface2Dark : AppColors.surface2Light,
         borderRadius: BorderRadius.circular(22),
         border: Border.all(color: AppColors.stroke),
       ),
@@ -294,8 +299,10 @@ class _CollectionRow extends StatelessWidget {
             decoration: BoxDecoration(
               gradient: RadialGradient(
                 colors: [
-                  AppColors.primary.withValues(alpha: 0.35),
-                  AppColors.surface2,
+                  isDark
+                      ? AppColors.primary.withValues(alpha: 0.35)
+                      : AppColors.primary.withValues(alpha: 0.35),
+                  isDark ? AppColors.surface2Dark : AppColors.surface2Light,
                 ],
               ),
               borderRadius: BorderRadius.circular(18),
