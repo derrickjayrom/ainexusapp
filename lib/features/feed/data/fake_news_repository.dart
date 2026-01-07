@@ -2,53 +2,29 @@ import '../domain/article.dart';
 import 'news_repository.dart';
 
 class FakeNewsRepository implements NewsRepository {
-  @override
-  Future<List<Article>> fetchFeed() async {
-    await Future<void>.delayed(const Duration(milliseconds: 300));
+  final List<Article> _all = List.generate(40, (i) {
+    final n = i + 1;
+    return Article(
+      id: 'a$n',
+      title: 'AI Update #$n: Major model and tool changes',
+      subtitle:
+          'Summary for item #$n. This is placeholder text for production scaffolding.',
+      source: (n % 2 == 0) ? 'TechCrunch' : 'The Verge',
+      timeAgo: '${(n % 12) + 1}h ago',
+      isLive: n == 1,
+      type: ContentType.article,
+    );
+  });
 
-    return const [
-      Article(
-        id: 'a1',
-        title: 'GPT-5 Official Release Date Confirmed for Late 2024',
-        subtitle:
-            'Major updates expected across reasoning and multimodal capabilities.',
-        source: 'OpenAI',
-        timeAgo: '12m ago',
-        isLive: true,
-      ),
-      Article(
-        id: 'a2',
-        title: 'Midjourney V7 Alpha Testing Begins with Video Support',
-        subtitle:
-            'Users report stunning consistency improvements and better motion handling.',
-        source: 'The Verge',
-        timeAgo: '45m ago',
-      ),
-      Article(
-        id: 'a3',
-        title: 'Copilot X Integration Now Live in VS Code',
-        subtitle:
-            'Seamless context awareness for multi-file edits and refactors.',
-        source: 'TechCrunch',
-        timeAgo: '2h ago',
-      ),
-      Article(
-        id: 'a4',
-        title:
-            'Claude 3.5 Opus just dropped: Outperforms GPT-4 on Math benchmarks',
-        subtitle: 'Significant reasoning improvements and 200k context window.',
-        source: 'Product Hunt',
-        timeAgo: '3h ago',
-        type: ContentType.tool,
-      ),
-      Article(
-        id: 'a5',
-        title: 'Global AI Regulation Summit Concludes in Geneva',
-        subtitle:
-            'World leaders agree on new safety principles and reporting expectations.',
-        source: 'Nature',
-        timeAgo: '1d ago',
-      ),
-    ];
+  @override
+  Future<List<Article>> fetchFeedPage({
+    required int page,
+    required int pageSize,
+  }) async {
+    await Future<void>.delayed(const Duration(milliseconds: 450));
+    final start = page * pageSize;
+    if (start >= _all.length) return <Article>[];
+    final end = (start + pageSize).clamp(0, _all.length);
+    return _all.sublist(start, end);
   }
 }

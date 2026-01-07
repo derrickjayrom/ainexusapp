@@ -10,7 +10,7 @@ class SavedScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final feed = ref.watch(feedProvider);
+    final feed = ref.watch(feedControllerProvider);
     final savedAsync = ref.watch(savedIdsProvider);
     final savedIds = savedAsync.value ?? <String>{};
 
@@ -32,7 +32,8 @@ class SavedScreen extends ConsumerWidget {
               padding: const EdgeInsets.only(top: 24),
               child: Center(child: Text('Failed to load saved: $e')),
             ),
-            data: (items) {
+            data: (state) {
+              final items = state.items;
               final savedItems = items
                   .where((a) => savedIds.contains(a.id))
                   .toList();
@@ -54,9 +55,12 @@ class SavedScreen extends ConsumerWidget {
                       timeAgo: a.timeAgo,
                       isLive: a.isLive,
                       isBookmarked: true,
-                      onBookmark: () => ref
-                          .read(savedIdsProvider.notifier)
-                          .toggle(a.id), // unsave
+                      onBookmark: () {
+                        ref
+                            .read(savedIdsProvider.notifier)
+                            .toggle(a.id); // unsave
+                        ref.read(feedControllerProvider.notifier).refresh();
+                      },
                       onTap: () {},
                     ),
                     const SizedBox(height: 12),

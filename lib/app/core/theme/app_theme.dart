@@ -5,63 +5,85 @@ import '../../../design/tokens/app_colors.dart';
 import '../../../design/tokens/app_radius.dart';
 
 class AppTheme {
-  static ThemeData dark() {
-    final base = ThemeData.dark(useMaterial3: true);
+  static ThemeData dark() => _buildTheme(Brightness.dark);
+  static ThemeData light() => _buildTheme(Brightness.light);
+
+  static ThemeData _buildTheme(Brightness brightness) {
+    final isDark = brightness == Brightness.dark;
+    final base = isDark
+        ? ThemeData.dark(useMaterial3: true)
+        : ThemeData.light(useMaterial3: true);
+
+    final bgMid = isDark ? AppColors.bgMidDark : AppColors.bgMidLight;
+    final surface = isDark ? AppColors.surfaceDark : AppColors.surfaceLight;
+    final surface2 = isDark ? AppColors.surface2Dark : AppColors.surface2Light;
+    final stroke = isDark ? AppColors.strokeDark : AppColors.strokeLight;
+
+    final textPrimary = isDark
+        ? AppColors.textPrimaryDark
+        : AppColors.textPrimaryLight;
+    final textSecondary = isDark
+        ? AppColors.textSecondaryDark
+        : AppColors.textSecondaryLight;
+    final textMuted = isDark
+        ? AppColors.textMutedDark
+        : AppColors.textMutedLight;
+
     final baseText = GoogleFonts.interTextTheme(base.textTheme);
 
     return base.copyWith(
-      scaffoldBackgroundColor: AppColors.bgMid,
+      scaffoldBackgroundColor: bgMid,
       colorScheme: base.colorScheme.copyWith(
-        brightness: Brightness.dark,
+        brightness: brightness,
         primary: AppColors.primary,
-        surface: AppColors.surface,
+        surface: surface,
       ),
 
       textTheme: baseText.copyWith(
         headlineLarge: (baseText.headlineLarge ?? const TextStyle()).copyWith(
           fontSize: 34,
           fontWeight: FontWeight.w800,
-          color: AppColors.textPrimary,
+          color: textPrimary,
           height: 1.05,
         ),
         titleLarge: (baseText.titleLarge ?? const TextStyle()).copyWith(
           fontSize: 22,
           fontWeight: FontWeight.w700,
-          color: AppColors.textPrimary,
+          color: textPrimary,
         ),
         titleMedium: (baseText.titleMedium ?? const TextStyle()).copyWith(
           fontSize: 16,
           fontWeight: FontWeight.w600,
-          color: AppColors.textPrimary,
+          color: textPrimary,
         ),
         bodyLarge: (baseText.bodyLarge ?? const TextStyle()).copyWith(
           fontSize: 16,
           fontWeight: FontWeight.w500,
-          color: AppColors.textSecondary,
+          color: textSecondary,
           height: 1.35,
         ),
         bodyMedium: (baseText.bodyMedium ?? const TextStyle()).copyWith(
           fontSize: 14,
           fontWeight: FontWeight.w500,
-          color: AppColors.textSecondary,
+          color: textSecondary,
           height: 1.35,
         ),
         labelLarge: (baseText.labelLarge ?? const TextStyle()).copyWith(
           fontSize: 12,
           fontWeight: FontWeight.w800,
-          color: AppColors.textMuted,
+          color: textMuted,
           letterSpacing: 0.8,
         ),
       ),
 
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: AppColors.surface2,
-        hintStyle: const TextStyle(color: AppColors.textMuted),
-        labelStyle: const TextStyle(color: AppColors.textMuted),
+        fillColor: surface2,
+        hintStyle: TextStyle(color: textMuted),
+        labelStyle: TextStyle(color: textMuted),
         enabledBorder: OutlineInputBorder(
           borderRadius: AppRadius.rLg,
-          borderSide: const BorderSide(color: AppColors.stroke, width: 1),
+          borderSide: BorderSide(color: stroke, width: 1),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: AppRadius.rLg,

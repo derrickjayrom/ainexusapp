@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ainexusapp/features/auth/state/auth_controller.dart';
+import 'package:ainexusapp/app/core/theme/theme_providers.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
@@ -16,6 +17,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     final t = Theme.of(context).textTheme;
+    final themeMode = ref.watch(themeProvider);
+    final isDark = themeMode == ThemeMode.dark;
 
     return SafeArea(
       child: ListView(
@@ -51,11 +54,15 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   children: [
                     CircleAvatar(
                       radius: 44,
-                      backgroundColor: AppColors.surface2,
-                      child: const Icon(
+                      backgroundColor: isDark
+                          ? AppColors.surface2Dark
+                          : AppColors.surface2Light,
+                      child: Icon(
                         Icons.person_outline,
                         size: 46,
-                        color: AppColors.textPrimary,
+                        color: isDark
+                            ? AppColors.textPrimaryDark
+                            : AppColors.textPrimaryLight,
                       ),
                     ),
                     Positioned(
@@ -68,14 +75,18 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                           color: AppColors.primary,
                           shape: BoxShape.circle,
                           border: Border.all(
-                            color: AppColors.surface2,
+                            color: isDark
+                                ? AppColors.surface2Dark
+                                : AppColors.surface2Light,
                             width: 3,
                           ),
                         ),
-                        child: const Icon(
+                        child: Icon(
                           Icons.edit,
                           size: 18,
-                          color: AppColors.textPrimary,
+                          color: isDark
+                              ? AppColors.textPrimaryDark
+                              : AppColors.textPrimaryLight,
                         ),
                       ),
                     ),
@@ -89,7 +100,11 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 const SizedBox(height: 4),
                 Text(
                   "alex.dev@example.com",
-                  style: t.bodyMedium?.copyWith(color: AppColors.textMuted),
+                  style: t.bodyMedium?.copyWith(
+                    color: isDark
+                        ? AppColors.textMutedDark
+                        : AppColors.textMutedLight,
+                  ),
                 ),
                 const SizedBox(height: 18),
 
@@ -113,10 +128,11 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           _Panel(
             children: [
               _SwitchRow(
-                icon: Icons.nightlight_round,
-                title: "Dark Mode",
-                value: true,
-                onChanged: (_) {},
+                icon: isDark ? Icons.nightlight_round : Icons.light_mode,
+                title: isDark ? "Dark Mode" : "Light Mode",
+                value: isDark,
+                onChanged: (_) =>
+                    ref.read(themeProvider.notifier).toggleTheme(),
               ),
               _NavRow(
                 icon: Icons.notifications_none,
@@ -185,9 +201,12 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             child: Container(
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
-                color: AppColors.surface.withValues(alpha: 0.75),
+                color: (isDark ? AppColors.surfaceDark : AppColors.surfaceLight)
+                    .withValues(alpha: 0.75),
                 borderRadius: BorderRadius.circular(22),
-                border: Border.all(color: AppColors.stroke),
+                border: Border.all(
+                  color: isDark ? AppColors.strokeDark : AppColors.strokeLight,
+                ),
               ),
               child: Center(
                 child: Text(
@@ -205,7 +224,11 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           Center(
             child: Text(
               "AI News Feed v2.4.0",
-              style: t.bodyMedium?.copyWith(color: AppColors.textMuted),
+              style: t.bodyMedium?.copyWith(
+                color: isDark
+                    ? AppColors.textMutedDark
+                    : AppColors.textMutedLight,
+              ),
             ),
           ),
         ],
@@ -227,20 +250,25 @@ class _Metric extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Theme.of(context).textTheme;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Column(
       children: [
         Text(
           value,
           style: t.titleLarge?.copyWith(
             fontWeight: FontWeight.w900,
-            color: highlight ? AppColors.primary : AppColors.textPrimary,
+            color: highlight
+                ? AppColors.primary
+                : (isDark
+                      ? AppColors.textPrimaryDark
+                      : AppColors.textPrimaryLight),
           ),
         ),
         const SizedBox(height: 4),
         Text(
           label,
           style: t.bodyMedium?.copyWith(
-            color: AppColors.textMuted,
+            color: isDark ? AppColors.textMutedDark : AppColors.textMutedLight,
             fontWeight: FontWeight.w800,
           ),
         ),
@@ -255,11 +283,15 @@ class _Panel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.surface.withValues(alpha: 0.75),
+        color: (isDark ? AppColors.surfaceDark : AppColors.surfaceLight)
+            .withValues(alpha: 0.75),
         borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: AppColors.stroke),
+        border: Border.all(
+          color: isDark ? AppColors.strokeDark : AppColors.strokeLight,
+        ),
       ),
       child: Column(children: children),
     );
@@ -280,10 +312,18 @@ class _SwitchRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return ListTile(
       leading: CircleAvatar(
-        backgroundColor: AppColors.surface2,
-        child: Icon(icon, color: AppColors.textPrimary),
+        backgroundColor: isDark
+            ? AppColors.surface2Dark
+            : AppColors.surface2Light,
+        child: Icon(
+          icon,
+          color: isDark
+              ? AppColors.textPrimaryDark
+              : AppColors.textPrimaryLight,
+        ),
       ),
       title: Text(
         title,
@@ -314,11 +354,19 @@ class _NavRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Theme.of(context).textTheme;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return ListTile(
       onTap: onTap,
       leading: CircleAvatar(
-        backgroundColor: AppColors.surface2,
-        child: Icon(icon, color: AppColors.textPrimary),
+        backgroundColor: isDark
+            ? AppColors.surface2Dark
+            : AppColors.surface2Light,
+        child: Icon(
+          icon,
+          color: isDark
+              ? AppColors.textPrimaryDark
+              : AppColors.textPrimaryLight,
+        ),
       ),
       title: Text(
         title,
@@ -348,7 +396,9 @@ class _NavRow extends StatelessWidget {
           const SizedBox(width: 8),
           Icon(
             external ? Icons.open_in_new : Icons.chevron_right,
-            color: AppColors.textSecondary,
+            color: isDark
+                ? AppColors.textSecondaryDark
+                : AppColors.textSecondaryLight,
           ),
         ],
       ),

@@ -97,9 +97,13 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
 
                 TextButton(
                   onPressed: () => context.go('/login'),
-                  child: const Text(
+                  child: Text(
                     "Already have an account? Log In",
-                    style: TextStyle(color: AppColors.textSecondary),
+                    style: TextStyle(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? AppColors.textSecondaryDark
+                          : AppColors.textSecondaryLight,
+                    ),
                   ),
                 ),
               ],
@@ -127,10 +131,12 @@ class _FeatureRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Theme.of(context).textTheme;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final color = isDark ? AppColors.bgBottomDark : AppColors.bgBottomLight;
 
     return Material(
       borderRadius: AppRadius.rSm,
-      color: AppColors.bgBottom.withValues(alpha: 0.4),
+      color: color.withValues(alpha: 0.4),
       child: InkWell(
         borderRadius: AppRadius.rSm,
         onTap: onTap,
@@ -142,9 +148,17 @@ class _FeatureRow extends StatelessWidget {
                 width: 52,
                 height: 52,
                 decoration: BoxDecoration(
-                  color: AppColors.surface2.withValues(alpha: 0.9),
+                  color:
+                      (isDark
+                              ? AppColors.surface2Dark
+                              : AppColors.surface2Light)
+                          .withValues(alpha: 0.9),
                   borderRadius: BorderRadius.circular(18),
-                  border: Border.all(color: AppColors.stroke),
+                  border: Border.all(
+                    color: isDark
+                        ? AppColors.strokeDark
+                        : AppColors.strokeLight,
+                  ),
                 ),
                 child: Icon(icon, color: AppColors.primary),
               ),
@@ -163,7 +177,9 @@ class _FeatureRow extends StatelessWidget {
                     Text(
                       desc,
                       style: t.bodyMedium?.copyWith(
-                        color: AppColors.textSecondary,
+                        color: isDark
+                            ? AppColors.textSecondaryDark
+                            : AppColors.textSecondaryLight,
                       ),
                     ),
                   ],
