@@ -20,12 +20,15 @@ class SegmentedTabs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.all(6),
       decoration: BoxDecoration(
-        color: AppColors.surface2.withValues(alpha: 0.9),
+        color: isDark ? AppColors.surface2Dark : AppColors.surface2Light,
         borderRadius: AppRadius.rLg,
-        border: Border.all(color: AppColors.stroke),
+        border: Border.all(
+          color: isDark ? AppColors.strokeDark : AppColors.strokeLight,
+        ),
       ),
       child: Row(
         children: [

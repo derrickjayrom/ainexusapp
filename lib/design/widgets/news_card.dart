@@ -28,6 +28,7 @@ class NewsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Theme.of(context).textTheme;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return InkWell(
       borderRadius: AppRadius.rLg,
@@ -35,9 +36,11 @@ class NewsCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: AppColors.surface.withValues(alpha: 0.75),
+          color: isDark ? AppColors.surface2Dark : AppColors.surface2Light,
           borderRadius: AppRadius.rLg,
-          border: Border.all(color: AppColors.stroke.withValues(alpha: 0.85)),
+          border: Border.all(
+            color: isDark ? AppColors.strokeDark : AppColors.strokeLight,
+          ),
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,

@@ -10,12 +10,16 @@ class AppShell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
       body: AppBackground(
         child: navigationShell, // GoRouter renders the active branch here
       ),
       bottomNavigationBar: NavigationBar(
-        backgroundColor: AppColors.surface2.withValues(alpha: 0.95),
+        backgroundColor:
+            (isDark ? AppColors.surface2Dark : AppColors.surface2Light)
+                .withValues(alpha: 0.95),
         indicatorColor: AppColors.primary.withValues(alpha: 0.20),
         selectedIndex: navigationShell.currentIndex,
         onDestinationSelected: (idx) {

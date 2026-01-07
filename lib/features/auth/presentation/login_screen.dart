@@ -203,22 +203,33 @@ class _SocialButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(18),
       child: Container(
         height: 56,
         decoration: BoxDecoration(
-          color: AppColors.surface2.withValues(alpha: 0.9),
+          color: isDark ? AppColors.surface2Dark : AppColors.surface2Light,
           borderRadius: BorderRadius.circular(18),
-          border: Border.all(color: AppColors.stroke),
+          border: Border.all(
+            color: isDark ? AppColors.strokeDark : AppColors.strokeLight,
+          ),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, color: AppColors.textPrimary),
+            Icon(
+              icon,
+              color: isDark ? AppColors.strokeDark : AppColors.strokeLight,
+            ),
             const SizedBox(width: 10),
-            Text(label, style: Theme.of(context).textTheme.titleMedium),
+            Text(
+              label,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                color: isDark ? AppColors.strokeDark : AppColors.strokeLight,
+              ),
+            ),
           ],
         ),
       ),
